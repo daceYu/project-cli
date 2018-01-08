@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no">
+	<meta name="apple-touch-fullscreen" content="YES" />
+	<title>测试页面</title>
+	<link rel="stylesheet" type="text/css" href="css/test.css">
+</head>
+<body>
+	
+	<!-- imgLoad -->
+	<img class="u-w imgload" src="" data-original='images/banner' data-format='png'>
+	
+	<!-- fileIncludes -->
+	@@include('components/fileInclude.tpl', {"title": "fileInclude"})
+	
+	<!-- LazyModule -->
+    <div class="j-load" data-srcid="components/template.html"></div>
+
+    <div id="render">
+    	<!-- mustache -->
+    </div>
+
+	<script type="text/javascript" src="js/test.js"></script> 
+</body>
+</html>
