@@ -82,9 +82,9 @@ function deepLoopFolder (project_path, dir, callback) {
 		let pathname = path.join(dir, filename);
 
 		if (fs.statSync(pathname).isDirectory()) {
-
-			let template_path = /createProject\\(.+)/.exec(pathname)[1];
-            let relative_path = /[^\\]*(.+)/.exec(template_path)[1];
+			pathname = pathname.replace(/\\/,"/");  // window & mac 路径符号统一
+			let template_path = /createProject\/(.+)/.exec(pathname)[1];
+            let relative_path = /[^\/]*(.+)/.exec(template_path)[1];
             let new_path = path.join(project_path,relative_path);
 
 			setFolder(new_path);
