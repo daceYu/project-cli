@@ -8,6 +8,7 @@ const fsFunc = require("./lib/fs/fsFunc");
 const path = require("path");
 const fs = require("fs");
 
+const Fetch = require('./common');
 let config = require("./config");
 
 
@@ -17,29 +18,59 @@ let Create = {
 	 * param {Object} options: config, relative folder path
 	 */
 	init: (options) => {
-		if (!options.folder || !options.choseTpl || (options.choseTpl !== 'A' && options.choseTpl !== 'a' && options.choseTpl !== 'B'&& options.choseTpl !== 'b')) {
+		if (!options.folder || !options.choseTpl || (
+				options.choseTpl !== 'A' && options.choseTpl !== 'a' && 
+				options.choseTpl !== 'B'&& options.choseTpl !== 'b' && 
+				options.choseTpl !== 'C'&& options.choseTpl !== 'c')
+			) {
 			console.log(color.get("FgRed"), "Error, Please operate according to steps");
 			return false;
 		}
 
-		Create.createTree(options);
+		Create.deal(options);
+	},
+	/**
+	 * process options
+	 * param {Object} options: config, relative folder path
+	 */
+	deal: (options) => {
+		// 选择模板
+		let chosen_tpl = options.choseTpl;
+		if (chosen_tpl === "a" || chosen_tpl === "A") {
+			let dir = path.join(__dirname, "/land");
+			Create.createTree(options.folder, dir);
+			return false;
+		}
+		if (chosen_tpl === "b" || chosen_tpl === "B") {
+			let dir = path.join(__dirname, "/activity");
+			Create.createTree(options.folder, dir);
+			return false;
+		}
+		if (chosen_tpl === "c" || chosen_tpl === "C") {
+			// check input
+			if(!options.folder || !options.filename || !options.buildname){
+				console.log(color.get('FgRed'),'Error! The input is wrong');
+				return false;
+			}
+
+			this.dist = path.join(config.pathroot, options.folder);
+			this.filename = options.filename;
+			this.buildname = options.buildname;
+
+			fsFunc.setFolder(this.dist);
+
+			let dir = path.join(__dirname, "/templates/" + this.filename);
+			fsFunc.renderTemplates(dir, Create.buildTemplate);
+			return false;
+		}
 	},
 	/**
 	 * create folder tree
 	 * param {String} folderName: project Name && project root path
+	 * param {String} dir: template path
 	 */
-	createTree: (options) => {
-		// 选择模板
-		let chosen_tpl = options.choseTpl;
-		let dir;
-		if (chosen_tpl === "a" || chosen_tpl === "A") {
-			dir = path.join(__dirname, "/land");
-		}
-		if (chosen_tpl === "b" || chosen_tpl === "B") {
-			dir = path.join(__dirname, "/activity");
-		}
-
-		let project_path = path.join(config.pathroot, options.folder);
+	createTree: (folderName, dir) => {
+		let project_path = path.join(config.pathroot, folderName);
 		fsFunc.setFolder(project_path);
 		// 遍历模板目录 && 生成新的项目
 		fsFunc.deepLoopFolder(project_path, dir, function (pathname) {
@@ -58,6 +89,20 @@ let Create = {
 				fsFunc.setFile(new_path, data);
 			});
 		});
+	},
+	buildTemplate: (data) => {
+		/* get css data array && build css */
+		let cssArr = Fetch.fetchData(data, Fetch.reg.css);
+		cssArr = cssArr ? cssArr.join('') : cssArr;
+		fsFunc.setFile(path.join(this.dist, 'css/style.css'), cssArr);
+		
+		/* get js data array && build js */
+		let jsArr = Fetch.fetchData(data, Fetch.reg.js);
+		fsFunc.buildJsFile(jsArr, this.dist);
+
+		/* get html data && build html */
+		let htmlData = data.replace(Fetch.reg.css, '').replace(Fetch.reg.js, '');
+		fsFunc.setFile(path.join(this.dist, this.buildname), htmlData);
 	}
 }
 

@@ -2,15 +2,17 @@
  * base 
  * explain: process operation
  */
-const Steps = require("./step");
+const { Steps, templateCStep } = require("./step");
 const color = require("../util/color");
 
-let Result = {};
-let _resArr = [];
+let TipTxt = [];  // save hint content
+let Result = {};  // save Enter content
+let _resArr = []; // save Steps
 
-// get key words
-for(var i in Steps){
+// get Common steps && operate according to it
+for(let i in Steps){
 	Result[i] = null;
+	TipTxt[i] = Steps[i];
 	_resArr.push(i);
 }
 
@@ -19,7 +21,7 @@ for(var i in Steps){
  * @ param {Function} cb: callback function
  */
 function startCMD (cb) {
-	console.log(color.get('FgGreen'),Steps[_resArr[0]]);
+	console.log(color.get('FgGreen'),TipTxt[_resArr[0]]);
 	// Input Chinese may garbled, Set stream encoding
 	process.stdin.setEncoding('utf-8');
 	// The default is pause, call the following code to resume
@@ -40,16 +42,26 @@ function dealCMD (data, cb) {
 	let _result = data.toString().trim();
 	// no process in
 	if (!_result) {
-		console.log(color.get('FgGreen'),Steps[_resArr[0]]);
+		console.log(color.get('FgGreen'),TipTxt[_resArr[0]]);
 		return false;
 	}
 
 	// record result
-	Result[_resArr.shift()] = _result;
+	let stepName = _resArr.shift();
+	Result[stepName] = _result;
+
+	// chose template C need more steps to create file
+	if (_result === "C" || _result === "c" && stepName === "choseTpl") {
+		for(let i in templateCStep){
+			Result[i] = null;
+			TipTxt[i] = templateCStep[i];
+			_resArr.push(i);
+		}
+	}
 
 	// proceed to Next step ?
 	if (_resArr.length) {
-		console.log(color.get('FgGreen'),Steps[_resArr[0]]);
+		console.log(color.get('FgGreen'),TipTxt[_resArr[0]]);
 	} else {
 		process.stdin.pause();
 		cb(Result);

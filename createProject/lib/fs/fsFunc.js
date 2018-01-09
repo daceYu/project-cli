@@ -95,11 +95,76 @@ function deepLoopFolder (project_path, dir, callback) {
 	})
 }
 
+/**!
+ * @ build js file
+ * @ param {String} jsArr: js data
+ * @ param {String} distpath: create file path
+ */
+function buildJsFile (jsArr, distPath) {
+	/* build js folder */
+	const folderPath = path.join(distPath, 'js');
+	setFolder(folderPath);
+
+	
+	let jsname = [];
+	let jsArrLength = jsArr.length;
+
+	/* according to regular expression to macth js name */
+	let reg = /@@(.*)@@/; 
+	for (let i = 0; i < jsArrLength; i++ ) {
+		let _d = jsArr[i].match(reg);
+		jsname[i] = _d.length > 1 ? _d[1].replace(reg).trim() : '';
+	}
+
+	/* No matching to js name or No js module */
+	if (!jsname[0]) {
+		console.log('No matching to js name or No js module.');
+		return false;
+	}
+
+	/* according to js name to created js file */
+	for (let i = 0; i < jsArrLength; i++ ) {
+		const jsPath = path.join(distPath, 'js', jsname[i] + '.js');
+		setFile(jsPath, jsArr[i]);
+	}
+}
+
+/**!
+ * @ render templates
+ * @ param {String} srcPath: module page path
+ * @ param {Function} cb: callback function 
+ */
+function renderTemplates (srcPath,cb) {
+	if(!srcPath) return false;
+	let folderPath = path.dirname(srcPath);
+
+	// read file and get the data of file
+	fs.readFile(srcPath, {encoding : 'utf-8'}, (err,data) => {
+		if (err) {
+			console.log(color.get('FgRed'),err);
+			return false;
+		}
+
+		// get translated file of template
+		let dataReplace = data.replace(/<link\srel="import"\shref="(.*)">/gi, (matchs, m1) => {
+            // read template file that includes components file
+            return fs.readFileSync(path.join(folderPath, m1), {
+                encoding: 'utf8'
+            });
+        });
+
+		if (cb) cb(dataReplace);
+	})
+}
+
+
 
 
 module.exports = {
 	fsExistSync,
 	setFolder,
 	setFile,
-	deepLoopFolder
+	deepLoopFolder,
+	buildJsFile,
+	renderTemplates
 }
