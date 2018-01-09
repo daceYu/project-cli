@@ -51,17 +51,6 @@ let isLogin = (data, cb, flag) => {
             cb(data);
         }
     }else{
-        /*window.userinfo = {
-            // 老用户
-            custId: '100100008782',
-            encryptionCustId: '5905900518239'
-            // 新用户 已体验
-            // custId: '100100009325',
-            // encryptionCustId: '5905900550276'
-            // 新用户 未体验
-            // custId: '100100009327',
-            // encryptionCustId: '5905900550394'
-        }*/
         ifundBasic.getUserinfo(function(){
             data.custid = window.userinfo.custId;
             data.encryptcustid = window.userinfo.encryptionCustId;
