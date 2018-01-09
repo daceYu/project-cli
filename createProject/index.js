@@ -43,7 +43,7 @@ let Create = {
 		fsFunc.setFolder(project_path);
 		// 遍历模板目录 && 生成新的项目
 		fsFunc.deepLoopFolder(project_path, dir, function (pathname) {
-			pathname = pathname.replace(/\\/,"/");  // window & mac 路径符号统一
+			pathname = pathname.replace(/\\/g,"/");  // window & mac 路径符号统一
             let template_path = /createProject\/(.+)/.exec(pathname)[1];
             let relative_path = /[^\/]*(.+)/.exec(template_path)[1];
             let new_path = path.join(project_path,relative_path);
