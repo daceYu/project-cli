@@ -1,5 +1,6 @@
-/**!
- * @ console colors
+/**
+ * console colors 
+ * author: yugang <yugang@myhexin.com>
  */
 var colors = {
     end: "%s\x1b[0m",

@@ -1,5 +1,6 @@
 /**!
  * project structure
+ * author: yugang <yugang@myhexin.com>
  */
 
 const color = require("./lib/util/color");
@@ -34,7 +35,7 @@ let Create = {
 	 * param {Object} options: config, relative folder path
 	 */
 	deal: (options) => {
-		// 选择模板
+		// chose template
 		let chosen_tpl = options.choseTpl;
 		if (chosen_tpl === "a" || chosen_tpl === "A") {
 			let dir = path.join(__dirname, "/land");
@@ -72,14 +73,14 @@ let Create = {
 	createTree: (folderName, dir) => {
 		let project_path = path.join(config.pathroot, folderName);
 		fsFunc.setFolder(project_path);
-		// 遍历模板目录 && 生成新的项目
+		// deepLoop template folder && generate new folder
 		fsFunc.deepLoopFolder(project_path, dir, function (pathname) {
-			pathname = pathname.replace(/\\/g,"/");  // window & mac 路径符号统一
+			pathname = pathname.replace(/\\/g,"/");  // window & mac Unified format
             let template_path = /createProject\/(.+)/.exec(pathname)[1];
             let relative_path = /[^\/]*(.+)/.exec(template_path)[1];
             let new_path = path.join(project_path,relative_path);
 			
-			// 读取文件内容并新建文件
+			// reader file and create new file
             fs.readFile(pathname, {encoding : 'utf-8'}, function (err, data) {
 				if (err) {
 					console.log(Color.get('FgRed'), err);

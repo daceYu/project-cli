@@ -1,16 +1,17 @@
 /**!
  * base 
  * explain: folder or file operation
+ * author: yugang <yugang@myhexin.com>
  */
 
 const fs = require('fs');
 const path = require('path');
 const color = require('../util/color');
 
-/**!
- * @ verify file or folder exists
- * @ param {String} pathname: folder or file path
- * @ return {Boolean} exist : ture ? false 
+/**
+ * verify file or folder exists
+ * param {String} pathname: folder or file path
+ * return {Boolean} exist : ture ? false 
  */
 function fsExistSync (pathname) {
 	try{
@@ -22,9 +23,9 @@ function fsExistSync (pathname) {
 	return true;
 }
 
-/**!
- * @ find folder, if not exist, build it
- * @ param {String} pathname: folder path
+/**
+ * find folder, if not exist, build it
+ * param {String} pathname: folder path
  */
 function setFolder (pathname, flag) {
 	if (!fs.existsSync(pathname)) {
@@ -36,10 +37,10 @@ function setFolder (pathname, flag) {
 	}
 }
 
-/**!
- * @ find file, if not exist, build it
- * @ param {String} pathname: create file path with file name
- * @ param {String} filedata: file contents created
+/**
+ * find file, if not exist, build it
+ * param {String} pathname: create file path with file name
+ * param {String} filedata: file contents created
  */
 function setFile (pathname, filedata) {
 	/* get file path && create folder */
@@ -82,7 +83,7 @@ function deepLoopFolder (project_path, dir, callback) {
 		let pathname = path.join(dir, filename);
 
 		if (fs.statSync(pathname).isDirectory()) {
-			pathname = pathname.replace(/\\/g,"/");  // window & mac 路径符号统一
+			pathname = pathname.replace(/\\/g,"/");  // window & mac Unified format
 			let template_path = /createProject\/(.+)/.exec(pathname)[1];
             let relative_path = /[^\/]*(.+)/.exec(template_path)[1];
             let new_path = path.join(project_path,relative_path);
@@ -95,10 +96,10 @@ function deepLoopFolder (project_path, dir, callback) {
 	})
 }
 
-/**!
- * @ build js file
- * @ param {String} jsArr: js data
- * @ param {String} distpath: create file path
+/**
+ * build js file
+ * param {String} jsArr: js data
+ * param {String} distpath: create file path
  */
 function buildJsFile (jsArr, distPath) {
 	/* build js folder */
@@ -129,10 +130,10 @@ function buildJsFile (jsArr, distPath) {
 	}
 }
 
-/**!
- * @ render templates
- * @ param {String} srcPath: module page path
- * @ param {Function} cb: callback function 
+/**
+ * render templates
+ * param {String} srcPath: module page path
+ * param {Function} cb: callback function 
  */
 function renderTemplates (srcPath,cb) {
 	if(!srcPath) return false;

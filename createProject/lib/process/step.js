@@ -1,6 +1,7 @@
 /**!
  * process config
  * explain: process steps words
+ * author: yugang <yugang@myhexin.com>
  */
 const Steps = {
 	folder: "请输入目录名称：",

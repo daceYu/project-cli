@@ -1,6 +1,7 @@
 /**!
  * configuration and method 
  * explain: Use these to analyze and extract
+ * author: yugang <yugang@myhexin.com>
  */
 require('./lib/util/util');
 
@@ -10,11 +11,11 @@ let reg = {
 	js: /<script>(([\s\S])*?)<\/script>/gi
 };
 
-/**!
- * @ fetch file data with regular expression
- * @ param {String} data: file content
- * @ param {reg value} reg: regular expression
- * @ return {Array} file data array
+/**
+ * fetch file data with regular expression
+ * param {String} data: file content
+ * param {reg value} reg: regular expression
+ * return {Array} file data array
  */
 function fetchData (data, reg) {
 	/* Match the date that meets the requirements */

@@ -1,7 +1,8 @@
-/**!
- * @ extend Array function 
- * @ array unique function
- * @ explain: remove duplicate data
+/**
+ * extend Array function 
+ * array unique function
+ * explain: remove duplicate data
+ * author: yugang <yugang@myhexin.com>
  */
 Array.prototype.unique = function () {
 	let res = [];

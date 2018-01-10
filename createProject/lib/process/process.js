@@ -1,6 +1,7 @@
 /**!
  * base 
  * explain: process operation
+ * author: yugang <yugang@myhexin.com>
  */
 const { Steps, templateCStep } = require("./step");
 const color = require("../util/color");
@@ -16,9 +17,9 @@ for(let i in Steps){
 	_resArr.push(i);
 }
 
-/**!
- * @ start process
- * @ param {Function} cb: callback function
+/**
+ * start process
+ * param {Function} cb: callback function
  */
 function startCMD (cb) {
 	console.log(color.get('FgGreen'),TipTxt[_resArr[0]]);
@@ -32,10 +33,10 @@ function startCMD (cb) {
 	})
 }
 
-/**!
- * @ deal width process result
- * @ param {Stream} data: process return
- * @ param {Function} cb: callback function
+/**
+ * deal width process result
+ * param {Stream} data: process return
+ * param {Function} cb: callback function
  */
 function dealCMD (data, cb) {
 	// Delete the spaces at the beginning and end of data
