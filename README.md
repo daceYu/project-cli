@@ -1,6 +1,8 @@
 # project-cli
 Generating a project with a command line
 
+[Blog Link](http://daceyu.com/2018/01/09/node_builder/)
+
 ## Support
 - A: landing page
 - B: activity / project
